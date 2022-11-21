@@ -1,5 +1,5 @@
 # sGTM Migrator
-**TL;DR sGTM Migrator helps you speed up the setup of your server container tags by setting up the communication with the server container and by migrating all supported Google tags (Google Analytics 4, Google Ads, Floodlights, Conversion Linker) from your web container. **
+**TL;DR** sGTM Migrator helps you speed up the setup of your server container tags by setting up the communication with the server container and by migrating all supported Google tags (Google Analytics 4, Google Ads, Floodlights, Conversion Linker) from your web container.
 
 ## Challenge
 Setting up a server-side tagging using Google Tag Manager can be time consuming and very manual. Users simply cannot export a web container and import it into the server container. Instead users need to start modifying both the web container, to establish a communication with the server container using the Google Analytics 4 tag as a source tag, as well as the server container to replicate desired configuration of Google tags in their server environment.

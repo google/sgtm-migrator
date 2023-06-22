@@ -486,6 +486,19 @@ function uploadTag(override, tag, action) {
   logger.log(`${action} tag '${tag.name}'`);
   logger.log(JSON.stringify(tag));
 
+  // Create folder on server if not exists
+  if ('parentFolderId' in tag) {
+    const webFolder = TagManagerHelper.getFolder(
+      bootstrap().webWorkspacePath,
+      tag.parentFolderId
+    );
+
+    tag.parentFolderId = migrateFolder(
+      bootstrap().serverWorkspacePath,
+      webFolder
+    );
+  }
+
   if (action === CONFIG.sheets.webFeed.actions.migrate) {
     // Create new server Tag
     TagManagerHelper.createTag(tag, bootstrap().serverWorkspacePath);
@@ -496,6 +509,56 @@ function uploadTag(override, tag, action) {
     // Create new web Tag
     TagManagerHelper.createTag(tag);
   }
+}
+
+/**
+ * Get all folders in workspace.
+ *
+ * @param {string} workspacePath
+ * @returns {TagManager.Accounts.Containers.Workspaces.Folder[]}
+ */
+function getAllFolders(workspacePath) {
+  const folders =
+    TagManager.Accounts.Containers.Workspaces.Folders.list(workspacePath);
+
+  if (!folders || !('folder' in folders)) return [];
+
+  return folders.folder;
+}
+
+/**
+ * Make sure all web folders exist on server.
+ */
+function migrateAllFolders() {
+  // Get all web folders
+  const folders = getAllFolders(bootstrap().webWorkspacePath);
+
+  // Create server folders
+  folders.forEach((folder) => {
+    migrateFolder(bootstrap().serverWorkspacePath, folder);
+  });
+}
+
+/**
+ * Create folder in workspace if not exists.
+ *
+ * @param {string} workspacePath
+ * @param {string} folder
+ * @returns {number}
+ */
+function migrateFolder(workspacePath, folder) {
+  const folders = getAllFolders(workspacePath);
+
+  let migratedFolder = folders?.find((f) => f.name === folder.name);
+
+  if (!migratedFolder) {
+    migratedFolder = TagManager.Accounts.Containers.Workspaces.Folders.create(
+      { name: folder.name },
+      workspacePath
+    );
+  }
+
+  return migratedFolder.folderId;
 }
 
 function ensureServerMeasurementIdVariableExists(workspacePath, measurementId) {

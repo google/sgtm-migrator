@@ -42,7 +42,11 @@ class TagManagerHelper {
    * @returns {string}
    */
   static getWorkspacePathFromTag(tag) {
-    return TagManagerHelper.getWorkspacePath(tag.accountId, tag.containerId, tag.workspaceId);
+    return TagManagerHelper.getWorkspacePath(
+      tag.accountId,
+      tag.containerId,
+      tag.workspaceId
+    );
   }
 
   /**
@@ -52,7 +56,8 @@ class TagManagerHelper {
    * @param {string|null}
    */
   static createTag(tag, workspacePath = null) {
-    workspacePath = workspacePath || TagManagerHelper.getWorkspacePathFromTag(tag);
+    workspacePath =
+      workspacePath || TagManagerHelper.getWorkspacePathFromTag(tag);
     TagManager.Accounts.Containers.Workspaces.Tags.create(tag, workspacePath);
 
     Utilities.sleep(TagManagerHelper.queryDelay);
@@ -80,7 +85,8 @@ class TagManagerHelper {
     let nextPageToken;
 
     do {
-      const res = TagManager.Accounts.Containers.Workspaces.Tags.list(workspacePath);
+      const res =
+        TagManager.Accounts.Containers.Workspaces.Tags.list(workspacePath);
 
       Utilities.sleep(TagManagerHelper.queryDelay);
 
@@ -101,7 +107,11 @@ class TagManagerHelper {
    * @returns {Object}
    */
   static fetchTag(accountId, containerId, workspaceId, tagId) {
-    const path = `${TagManagerHelper.getWorkspacePath(accountId, containerId, workspaceId)}/tags/${tagId}`
+    const path = `${TagManagerHelper.getWorkspacePath(
+      accountId,
+      containerId,
+      workspaceId
+    )}/tags/${tagId}`;
     const tag = TagManager.Accounts.Containers.Workspaces.Tags.get(path);
 
     Utilities.sleep(TagManagerHelper.queryDelay);
@@ -117,7 +127,7 @@ class TagManagerHelper {
    * @returns {Object}
    */
   static getTagParameter(tag, key) {
-    return tag.parameter?.find(p => p['key'] === key);
+    return tag.parameter?.find((p) => p['key'] === key);
   }
 
   /**
@@ -130,12 +140,14 @@ class TagManagerHelper {
    * @param {string} value
    */
   static setTagParameter(tag, key, type, value) {
-    const parameters = tag.parameter.filter((parameter) => parameter && parameter.key !== key);
+    const parameters = tag.parameter.filter(
+      (parameter) => parameter && parameter.key !== key
+    );
 
     parameters.push({
       key,
       type,
-      value
+      value,
     });
 
     tag.parameter = parameters;
@@ -151,11 +163,15 @@ class TagManagerHelper {
    */
   static updateListParameter(tag, parameter, targetKey = undefined) {
     const searchKey = targetKey ?? parameter.key;
-    const originalParam = tag.parameter.find((param) => param.key === searchKey);
+    const originalParam = tag.parameter.find(
+      (param) => param.key === searchKey
+    );
 
     if (originalParam) {
       originalParam.list = originalParam.list.concat(parameter.list);
-      tag.parameter = tag.parameter.filter((param) => param.key !== searchKey).concat(originalParam);
+      tag.parameter = tag.parameter
+        .filter((param) => param.key !== searchKey)
+        .concat(originalParam);
     } else {
       tag.parameter.push(parameter);
     }
@@ -168,7 +184,8 @@ class TagManagerHelper {
    * @result {Array<Object>} array of variables
    */
   static listAllVariables(workspacePath) {
-    const res = TagManager.Accounts.Containers.Workspaces.Variables.list(workspacePath);
+    const res =
+      TagManager.Accounts.Containers.Workspaces.Variables.list(workspacePath);
     Utilities.sleep(TagManagerHelper.queryDelay);
     return res.variable || [];
   }
@@ -180,7 +197,10 @@ class TagManagerHelper {
    * @result {Array<Object>} array of variables
    */
   static listAllBuiltInVariables(workspacePath) {
-    const res = TagManager.Accounts.Containers.Workspaces.Built_in_variables.list(workspacePath);
+    const res =
+      TagManager.Accounts.Containers.Workspaces.Built_in_variables.list(
+        workspacePath
+      );
     Utilities.sleep(TagManagerHelper.queryDelay);
     return res.builtInVariable || [];
   }
@@ -210,7 +230,10 @@ class TagManagerHelper {
       variable.notes = `${existingNotes}${notes}`;
     }
 
-    TagManager.Accounts.Containers.Workspaces.Variables.create(variable, workspacePath);
+    TagManager.Accounts.Containers.Workspaces.Variables.create(
+      variable,
+      workspacePath
+    );
     Utilities.sleep(TagManagerHelper.queryDelay);
   }
 
@@ -221,10 +244,26 @@ class TagManagerHelper {
    * @param {string} type
    */
   static createBuiltInVariable(workspacePath, type) {
-    TagManager.Accounts.Containers.Workspaces.Built_in_variables.create(workspacePath, {
-      type,
-    });
+    TagManager.Accounts.Containers.Workspaces.Built_in_variables.create(
+      workspacePath,
+      {
+        type,
+      }
+    );
 
     Utilities.sleep(TagManagerHelper.queryDelay);
+  }
+
+  /**
+   * Get folder by ID.
+   *
+   * @param {string} workspacePath
+   * @param {number} folderId
+   * @returns {TagManager.Accounts.Containers.Workspaces.Folder}
+   */
+  static getFolder(workspacePath, folderId) {
+    return TagManager.Accounts.Containers.Workspaces.Folders.get(
+      `${workspacePath}/folders/${folderId}`
+    );
   }
 }

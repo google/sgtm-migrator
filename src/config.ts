@@ -1,11 +1,11 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,27 +14,28 @@
  * limitations under the License.
  */
 
-const START_LEAN_MESSAGE = `Woohoo! We are migrating all possible Google tags to your server container. This can take a while. Sing like no one is listening.`;
+export const START_LEAN_MESSAGE = `Woohoo! We are migrating all possible Google tags to your server container. This can take a while. Sing like no one is listening.`;
 
-const SERVER_WORKSPACE_IS_MANAGED_DESCRIPTION = 'This workspace has been updated using the sGTM Migrator tool.' +
+export const SERVER_WORKSPACE_IS_MANAGED_DESCRIPTION =
+  'This workspace has been updated using the sGTM Migrator tool.' +
   '\n\nThe tool has migrated all supported Google tags (GA4, Google Ads, Floodlights, Conversion Linker). ' +
   'Variables used in these tags might require additional review. Triggers have not been migrated and need to be ' +
   'applied based on available functionalities in the server container.\n\nYou will find a set of pre-created variables. ' +
   'These are built-in server variables and variables based on your GA4 web tags pointing at the server container.';
 
-const WEB_WORKSPACE_IS_MANAGED_DESCRIPTION = 'This workspace has been updated using the sGTM Migrator tool.\n\n' +
+export const WEB_WORKSPACE_IS_MANAGED_DESCRIPTION =
+  'This workspace has been updated using the sGTM Migrator tool.\n\n' +
   'The tool has created (or overridden) all/selected GA4 tags to leverage the transport_url parameter.' +
   'This allows the GA4 tags to communicate with your server container.\n\n' +
   'Please navigate to the server container workspace to identify changes applied in the server container.';
 
+export const SERVER_VARIABLE_NOTES = `This variable has been created by the sGTM Migrator tool. It is based on either an event parameter, an user property or standard parameter from your GA4 tags pointing at this server container.`;
 
-const SERVER_VARIABLE_NOTES = `This variable has been created by the sGTM Migrator tool. It is based on either an event parameter, an user property or standard parameter from your GA4 tags pointing at this server container.`
+export const SERVER_MEASUREMENT_ID_VARIABLE_NOTE = `This variable has been created by the sGTM Migrator tool.`;
 
-const SERVER_MEASUREMENT_ID_VARIABLE_NOTE = `This variable has been created by the sGTM Migrator tool.`
+export const SERVER_MEASUREMENT_ID_VARIABLE_NAME = 'GA Measurement ID - sGTM';
 
-const SERVER_MEASUREMENT_ID_VARIABLE_NAME = 'GA Measurement ID - sGTM';
-
-const TAG_TYPES = {
+export const TAG_TYPES = {
   web: {
     gaConfig: 'gaawc',
     gaEvent: 'gaawe',
@@ -55,181 +56,216 @@ const TAG_TYPES = {
   },
 };
 
-const OVERRITABLE_TAGS = [TAG_TYPES.web.gaConfig, TAG_TYPES.web.gaEvent];
+export const OVERRITABLE_TAGS = [TAG_TYPES.web.gaConfig, TAG_TYPES.web.gaEvent];
 
-const DEFAULT_SERVER_VARIABLES = [
+export const DEFAULT_SERVER_VARIABLES: Array<{
+  type: keyof typeof VARIABLE_TYPES;
+  name: string;
+  value: string;
+}> = [
   {
     type: 'requestHeader',
     name: 'Cookie',
     value: 'Cookie',
-  }, {
+  },
+  {
     type: 'requestHeader',
     name: 'Host',
     value: 'Host',
-  }, {
+  },
+  {
     type: 'requestHeader',
     name: 'Origin',
     value: 'Origin',
-  }, {
+  },
+  {
     type: 'requestHeader',
     name: 'Referrer',
     value: 'Referrer',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Consent Status (gcs)',
     value: 'gcs',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Consent Default (gcd)',
     value: 'gcd',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Client ID (cid)',
     value: 'cid',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'GA4 Measurement ID (tid)',
     value: 'tid',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'User language (ul)',
     value: 'ul',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Screen Resolution (sr)',
     value: 'sr',
-  }, {
-    type: 'queryParameter',
-    name: '(uaa)',
-    value: 'uaa',
-  }, {
-    type: 'queryParameter',
-    name: '(uab)',
-    value: 'uab',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Session Hit Count (_s)',
     value: '_s',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Event Time (_et)',
     value: '_et',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Session Start (_ss)',
     value: '_ss',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Session ID (sid)',
     value: 'sid',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Session Count (sct)',
     value: 'sct',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Session Engagement (seg)',
     value: 'seg',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Document Location (dl)',
     value: 'dl',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Document Referer (dr)',
     value: 'dr',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Currency (cu)',
     value: 'cu',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'First Visit (_fv)',
     value: '_fv',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'User Country (_uc)',
     value: '_uc',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Custom Campaign Source (cs)',
     value: 'cs',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Custom Campaign Name (cn)',
     value: 'cn',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Custom Campaign Medium (cm)',
     value: 'cm',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Custom Campaign ID (ci)',
     value: 'ci',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Custom Campaign Term (ct)',
     value: 'ct',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Custom Campaign Content (cc)',
     value: 'cc',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Transaction ID',
     value: 'ep.transaction_id',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Transaction Affiliation',
     value: 'ep.affiliation',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Transaction Value',
     value: 'epn.value',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Transaction Tax',
     value: 'epn.tax',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Transaction Shipping',
     value: 'epn.shipping',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Transaction Coupon',
     value: 'ep.coupon',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Creative Name',
     value: 'ep.creative_name',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Creative Slot',
     value: 'ep.creative_slot',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Creative Location ID',
     value: 'ep.creative_location_id',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Promotion ID',
     value: 'ep.promotion_id',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Promotion Name',
     value: 'ep.promotion_name',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Item List Name',
     value: 'ep.item_list_name',
-  }, {
+  },
+  {
     type: 'queryParameter',
     name: 'Item List ID',
     value: 'ep.item_list_id',
   },
 ];
 
-const VARIABLE_TYPES = {
+export const VARIABLE_TYPES = {
   queryParameter: {
     name: 'queryParameter',
     key: 'queryParamName',
@@ -247,52 +283,60 @@ const VARIABLE_TYPES = {
   },
 };
 
-const BUILT_IN_VARIABLES = [
+export const BUILT_IN_VARIABLES = [
   {
     name: 'Event Name',
     type: 'eventName',
-  }, {
+  },
+  {
     name: 'Container Version',
     type: 'containerVersion',
-  }, {
+  },
+  {
     name: 'Debug Mode',
     type: 'debugMode',
-  }, {
+  },
+  {
     name: 'Random Number',
     type: 'randomNumber',
-  }, {
+  },
+  {
     name: 'Container ID',
     type: 'containerId',
-  }, {
+  },
+  {
     name: 'Request Path',
     type: 'requestPath',
-  }, {
+  },
+  {
     name: 'Request Method',
     type: 'requestMethod',
-  }, {
+  },
+  {
     name: 'Client Name',
     type: 'clientName',
-  }, {
+  },
+  {
     name: 'Query String',
     type: 'queryString',
   },
 ];
 
-const CONFIG = {
+export const CONFIG = {
   sheets: {
     readme: {
-      name: "Readme"
+      name: 'Read me',
     },
     config: {
       name: 'Config',
       fields: {
         transportUrl: 'TRANSPORT_URL',
         overrideTag: 'OVERRIDE_TAGS',
-        measurementId: 'MEASUREMENT_ID'
+        measurementId: 'MEASUREMENT_ID',
       },
     },
     serverFeed: {
-      name: 'Server Tags'
+      name: 'Server Tags',
     },
     tagColumns: {
       accountId: 0,
@@ -305,11 +349,11 @@ const CONFIG = {
       tagName: 7,
       tagType: 8,
       status: 9,
-      action: 10
+      action: 10,
     },
     webFeed: {
       name: 'Web Tags',
-      enums: {
+      /*enums: {
         success: 'Success',
         failed: 'Failed',
       },
@@ -322,7 +366,28 @@ const CONFIG = {
       actions: {
         rewrite: 'Rewrite',
         migrate: 'Migrate',
-      },
+      },*/
     },
   },
+  logging: {
+    startRangeName: 'LOGS_START',
+    maxLogs: 100,
+  },
 };
+
+export enum Action {
+  REWRITE = 'Rewrite',
+  MIGRATE = 'Migrate',
+}
+
+export enum ActionStatus {
+  SUCCESS = 'Success',
+  FAILED = 'Failed',
+}
+
+export enum Status {
+  REWRITTEN = 'rewritten',
+  MIGRATED = 'migrated',
+  REWRITTEN_AND_MIGRATED = 'rewritten & migrated',
+  NONE = 'none',
+}

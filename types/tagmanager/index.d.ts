@@ -44,6 +44,7 @@ declare namespace GoogleAppsScript {
       fingerprint?: string;
       tagManagerUrl?: string;
       firingTriggerId?: string[];
+      blockingTriggerId?: string[];
       monitoringMetadata?: MonitoringMetadata;
     }
 

@@ -697,6 +697,9 @@ export class App {
     }
 
     if (action === Action.MIGRATE) {
+      // Clean Tag attributes
+      App.cleanTagAttributes(tag);
+
       // Create new server Tag
       TagManagerHelper.createTag(tag, App.bootstrap().serverWorkspacePath);
     } else if (override) {
@@ -828,15 +831,6 @@ export class App {
   }
 
   static createNewServerTagType(tag: GoogleAppsScript.TagManager.Tag) {
-    delete tag['fingerprint'];
-    delete tag['tagManagerUrl'];
-    delete tag['tagId'];
-    delete tag['workspaceId'];
-    delete tag['containerId'];
-    delete tag['accountId'];
-    delete tag['path'];
-    delete tag['firingTriggerId'];
-
     const serverType = App.getMatchingServerTagType(tag['type']);
 
     if (!serverType) {
@@ -990,6 +984,25 @@ export class App {
     if (!configTagName) return;
 
     return override ? configTagName : App.getRewrittenTagName(configTagName);
+  }
+
+  /**
+   * Remove Tag attributes that would break migration.
+   * This is required when migrating.
+   * For example: A web 'Firing Trigger ID' will not likely exist on server.
+   *
+   * @param {GoogleAppsScript.TagManager.Tag} tag
+   */
+  static cleanTagAttributes(tag: GoogleAppsScript.TagManager.Tag) {
+    delete tag['fingerprint'];
+    delete tag['tagManagerUrl'];
+    delete tag['tagId'];
+    delete tag['workspaceId'];
+    delete tag['containerId'];
+    delete tag['accountId'];
+    delete tag['path'];
+    delete tag['firingTriggerId'];
+    delete tag['blockingTriggerId'];
   }
 
   /**

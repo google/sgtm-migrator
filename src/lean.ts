@@ -250,7 +250,7 @@ export function createLeanServerTag(
     type: 'sgtmgaaw',
   };
   if (!serverTags.some(tag => tag.name === leanServerTag.name)) {
-    UILogger.getInstance().log(`Ceate Lean server tag`, leanServerTag);
+    UILogger.getInstance().log(`Create Lean server tag`, leanServerTag);
     TagManagerHelper.createTag(leanServerTag, serverWorkspacePath);
   } else {
     UILogger.getInstance().log(

@@ -684,7 +684,8 @@ export class App {
     UILogger.getInstance().log(`${action} tag '${tag.name}'`);
     UILogger.getInstance().log(JSON.stringify(tag));
 
-    if (tag.parentFolderId) {
+    // Migrate parent folder to server on migrate
+    if (tag.parentFolderId && action === Action.MIGRATE) {
       const webFolder = TagManagerHelper.getFolder(
         App.bootstrap().webWorkspacePath,
         tag.parentFolderId

@@ -1,11 +1,11 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,11 +20,14 @@
  * @param {Array<Object>} arr
  * @param {string} key
  */
-function objectArrayRemoveDuplicatesByKey(arr, key) {
-  const hashMap = {};
+export function objectArrayRemoveDuplicatesByKey(
+  arr: Array<Record<string, unknown>>,
+  key: string
+) {
+  const hashMap: Record<string, unknown> = {};
 
-  arr.forEach((item) => {
-    hashMap[item[key]] = item;
+  arr.forEach(item => {
+    hashMap[item[key] as string] = item;
   });
 
   return Object.values(hashMap);
@@ -33,25 +36,26 @@ function objectArrayRemoveDuplicatesByKey(arr, key) {
 /**
  * Cache a function value with lazy evaluation.
  *
- * @param {Function} getValue 
+ * @param {Function} getValue
  * @return {Object}
  */
-function lazy(getValue) {
-  let res;
+export function lazy(getValue: Function) {
+  let res: unknown;
+
   return () => {
     if (!res) {
       res = getValue();
     }
     return res;
-  }
+  };
 }
 
 /**
  * Perform a deep copy.
  *
- * @param {Object} 
- * @return {Object}
+ * @param {Record<string, unknown>}
+ * @return {Record<string, unknown>}
  */
-function copy(object) {
+export function copy(object: Record<string, unknown>) {
   return JSON.parse(JSON.stringify(object));
 }
